@@ -129,6 +129,10 @@ export const Products: CollectionConfig = {
       admin: {
         hidden: true,
       },
+      // 
+      
+      // 
+      
     },
     {
       name: 'author',

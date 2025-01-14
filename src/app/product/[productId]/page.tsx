@@ -66,6 +66,11 @@ const Page = async ({ params }: PageProps) => {
 
   const [product] = products;
 
+  // Add these debug logs
+  console.log('Product:', product);
+  console.log('Description HTML:', product?.description_html);
+  console.log('Type of description:', typeof product?.description_html);
+
   if (!product) return notFound();
 
   const label = PRODUCT_CATEGORIES.find(
@@ -131,7 +136,13 @@ const Page = async ({ params }: PageProps) => {
 
         {/* Product Description */}
         <div className='mt-4 space-y-6'>
-          <StyledProductDescription descriptionHtml={product.description_html as string} />
+        <StyledProductDescription 
+  descriptionHtml={
+    (product.description_html && typeof product.description_html === 'string')
+      ? product.description_html
+      : ''
+  } 
+/>
         </div>
 
         {/* Author and Add to Cart Button */}
