@@ -1,27 +1,3 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -58,20 +34,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var get_payload_1 = require("./get-payload");
-var next_utils_1 = require("./next-utils");
-var trpcExpress = __importStar(require("@trpc/server/adapters/express"));
-var trpc_1 = require("./trpc");
-var body_parser_1 = __importDefault(require("body-parser"));
-var build_1 = __importDefault(require("next/dist/build"));
-var path_1 = __importDefault(require("path"));
-var url_1 = require("url");
-var app = (0, express_1.default)();
+import express from 'express';
+import { getPayloadClient } from './get-payload';
+import { nextApp, nextHandler } from './next-utils';
+import * as trpcExpress from '@trpc/server/adapters/express';
+import { appRouter } from './trpc';
+import bodyParser from 'body-parser';
+import nextBuild from 'next/dist/build';
+import path from 'path';
+import { parse } from 'url';
+import { convertDescriptions } from './convert-descriptions';
+var app = express();
 var PORT = Number(process.env.PORT) || 3000;
 var createContext = function (_a) {
     var req = _a.req, res = _a.res;
@@ -85,12 +58,12 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                webhookMiddleware = body_parser_1.default.json({
+                webhookMiddleware = bodyParser.json({
                     verify: function (req, _, buffer) {
                         req.rawBody = buffer;
                     },
                 });
-                return [4 /*yield*/, (0, get_payload_1.getPayloadClient)({
+                return [4 /*yield*/, getPayloadClient({
                         initOptions: {
                             express: app,
                             onInit: function (cms) { return __awaiter(void 0, void 0, void 0, function () {
@@ -100,14 +73,12 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                                 });
                             }); },
                         },
-                    })
-                    //   you have to be logged in to go to cart page 
-                    // code implementation
-                ];
+                    })];
             case 1:
                 payload = _a.sent();
-                //   you have to be logged in to go to cart page 
-                // code implementation
+                if (process.env.CONVERT_DESCRIPTIONS === 'true') {
+                    convertDescriptions(payload).catch(console.error);
+                }
                 if (process.env.NEXT_BUILD) {
                     app.listen(PORT, function () { return __awaiter(void 0, void 0, void 0, function () {
                         return __generator(this, function (_a) {
@@ -115,7 +86,7 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                                 case 0:
                                     payload.logger.info('Next.js is building for production');
                                     // @ts-expect-error
-                                    return [4 /*yield*/, (0, build_1.default)(path_1.default.join(__dirname, '../'))];
+                                    return [4 /*yield*/, nextBuild(path.join(__dirname, '../'))];
                                 case 1:
                                     // @ts-expect-error
                                     _a.sent();
@@ -126,23 +97,26 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                     }); });
                     return [2 /*return*/];
                 }
-                cartRouter = express_1.default.Router();
+                cartRouter = express.Router();
                 cartRouter.use(payload.authenticate);
                 cartRouter.get('/', function (req, res) {
                     var request = req;
-                    if (!request.user)
-                        return res.redirect('/sign-in?origin=favorites');
-                    var parsedUrl = (0, url_1.parse)(req.url, true);
+                    var parsedUrl = parse(req.url, true);
                     var query = parsedUrl.query;
-                    return next_utils_1.nextApp.render(req, res, '/favorites', parsedUrl.query);
+                    if (!request.user) {
+                        // Store the intended destination in the session or query parameter
+                        return res.redirect('/sign-in?origin=favorites');
+                    }
+                    // User is authenticated, render the favorites page
+                    return nextApp.render(req, res, '/favorites', query);
                 });
                 app.use('/favorites', cartRouter);
                 app.use('/api/trpc', trpcExpress.createExpressMiddleware({
-                    router: trpc_1.appRouter,
+                    router: appRouter,
                     createContext: createContext,
                 }));
-                app.use(function (req, res) { return (0, next_utils_1.nextHandler)(req, res); });
-                next_utils_1.nextApp.prepare().then(function () {
+                app.use(function (req, res) { return nextHandler(req, res); });
+                nextApp.prepare().then(function () {
                     payload.logger.info('Next.js started');
                     app.listen(PORT, function () { return __awaiter(void 0, void 0, void 0, function () {
                         return __generator(this, function (_a) {

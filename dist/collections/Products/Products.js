@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,7 +9,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -20,7 +18,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-
 var __generator = (this && this.__generator) || function (thisArg, body) {
     var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
     return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
@@ -48,7 +45,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -58,61 +54,54 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Products = void 0;
-
-var config_1 = require("../../config");
-var richtext_lexical_1 = require("@payloadcms/richtext-lexical");
-
-// Function to count words in Lexical editor content
-var countWordsInRichText = function(content) {
-    if (!content || typeof content !== 'object') return 0;
-
+import { PRODUCT_CATEGORIES, PRODUCT_THEMES } from '../../config';
+import { lexicalEditor, HTMLConverterFeature } from '@payloadcms/richtext-lexical';
+var addUser = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
+    var user;
+    var req = _b.req, data = _b.data;
+    return __generator(this, function (_c) {
+        user = req.user;
+        return [2 /*return*/, __assign(__assign({}, data), { user: user.id })];
+    });
+}); };
+var countWordsInRichText = function (content) {
+    var _a;
+    if (!content || typeof content !== 'object')
+        return 0;
     if (content.html) {
         var strippedHtml = content.html.replace(/<[^>]*>/g, ' ');
         return strippedHtml.trim().split(/\s+/).filter(Boolean).length;
     }
-
-    if (!content?.root?.children) return 0;
-
-    var extractTextFromNode = function(node) {
-        if (typeof node === 'string') return node;
-        if (typeof node?.text === 'string') return node.text;
-        if (Array.isArray(node?.children)) {
+    if (!((_a = content === null || content === void 0 ? void 0 : content.root) === null || _a === void 0 ? void 0 : _a.children))
+        return 0;
+    var extractTextFromNode = function (node) {
+        if (typeof node === 'string')
+            return node;
+        if (typeof (node === null || node === void 0 ? void 0 : node.text) === 'string')
+            return node.text;
+        if (Array.isArray(node === null || node === void 0 ? void 0 : node.children)) {
             return node.children.map(extractTextFromNode).join(' ');
         }
         return '';
     };
-
     var text = content.root.children.map(extractTextFromNode).join(' ');
     return text.trim().split(/\s+/).filter(Boolean).length;
 };
-
-// Combined hook to update both user and fields before change
-var updateFieldsBeforeChange = function(_a) {
-    var req = _a.req, data = _a.data, operation = _a.operation;
-    return __awaiter(void 0, void 0, void 0, function() {
-        var user;
-        return __generator(this, function(_b) {
-            user = req.user;
-            
-            // Update word count if description exists
-            if (data.description) {
-                data.descriptionWordCount = countWordsInRichText(data.description);
-            }
-
-            // Set or update publishedDate
-            if (operation === 'create' || !data.publishedDate) {
-                data.publishedDate = new Date().toISOString();
-            }
-
-            return [2 /*return*/, __assign(__assign({}, data), { user: user.id })];
-        });
+var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
+    var data = _b.data, operation = _b.operation;
+    return __generator(this, function (_c) {
+        // Update word count if description exists
+        if (data.description) {
+            data.descriptionWordCount = countWordsInRichText(data.description);
+        }
+        // Set or update publishedDate
+        if (operation === 'create' || !data.publishedDate) {
+            data.publishedDate = new Date().toISOString();
+        }
+        return [2 /*return*/, data];
     });
-};
-
-exports.Products = {
+}); };
+export var Products = {
     slug: 'products',
     admin: {
         useAsTitle: 'name',
@@ -122,46 +111,43 @@ exports.Products = {
         plural: 'Contents',
     },
     access: {
-        read: function(_a) {
+        read: function (_a) {
             var user = _a.req.user;
-            if (user?.role === 'admin') {
+            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin')
                 return true;
-            }
             return {
                 user: {
-                    equals: user?.id,
+                    equals: user === null || user === void 0 ? void 0 : user.id,
                 },
             };
         },
-        create: function(_a) {
+        create: function (_a) {
             var user = _a.req.user;
             return Boolean(user);
         },
-        update: function(_a) {
+        update: function (_a) {
             var user = _a.req.user;
-            if (user?.role === 'admin') {
+            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin')
                 return true;
-            }
             return {
                 user: {
-                    equals: user?.id,
+                    equals: user === null || user === void 0 ? void 0 : user.id,
                 },
             };
         },
-        delete: function(_a) {
+        delete: function (_a) {
             var user = _a.req.user;
-            if (user?.role === 'admin') {
+            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin')
                 return true;
-            }
             return {
                 user: {
-                    equals: user?.id,
+                    equals: user === null || user === void 0 ? void 0 : user.id,
                 },
             };
         },
     },
     hooks: {
-        beforeChange: [updateFieldsBeforeChange], // Combined hooks into one
+        beforeChange: [addUser, updateFieldsBeforeChange],
     },
     fields: [
         {
@@ -171,7 +157,7 @@ exports.Products = {
             required: true,
             hasMany: false,
             admin: {
-                condition: function() { return false; },
+                condition: function () { return false; },
             },
         },
         {
@@ -184,11 +170,11 @@ exports.Products = {
             name: 'description',
             label: 'Content Description',
             type: 'richText',
-            editor: richtext_lexical_1.lexicalEditor({
-                features: function(_a) {
+            editor: lexicalEditor({
+                features: function (_a) {
                     var defaultFeatures = _a.defaultFeatures;
                     return __spreadArray(__spreadArray([], defaultFeatures, true), [
-                        richtext_lexical_1.HTMLConverterFeature({}),
+                        HTMLConverterFeature({}),
                     ], false);
                 },
             }),
@@ -209,6 +195,8 @@ exports.Products = {
             admin: {
                 hidden: true,
             },
+            // 
+            // 
         },
         {
             name: 'author',
@@ -220,18 +208,23 @@ exports.Products = {
             name: 'category',
             label: 'Content Category',
             type: 'select',
-            options: config_1.PRODUCT_CATEGORIES.map(function(_a) {
+            options: PRODUCT_CATEGORIES.map(function (_a) {
                 var label = _a.label, value = _a.value;
                 return ({ label: label, value: value });
             }),
             required: true,
         },
         {
+            name: 'context',
+            label: 'Written Context',
+            type: 'text',
+        },
+        {
             name: 'themes',
             label: 'Content Themes',
             type: 'select',
             hasMany: true,
-            options: config_1.PRODUCT_THEMES.map(function(_a) {
+            options: PRODUCT_THEMES.map(function (_a) {
                 var label = _a.label, value = _a.value;
                 return ({ label: label, value: value });
             }),
@@ -254,22 +247,17 @@ exports.Products = {
             }
         },
         {
-            name: 'context',
-            label: 'Written Context',
-            type: 'text'
-        },
-        {
             name: 'approvedForSale',
             label: 'Content Status',
             type: 'select',
             defaultValue: 'pending',
             access: {
-                create: function(_a) {
+                create: function (_a) {
                     var req = _a.req;
                     return req.user.role === 'admin';
                 },
-                read: function() { return true; },
-                update: function(_a) {
+                read: function () { return true; },
+                update: function (_a) {
                     var req = _a.req;
                     return req.user.role === 'admin';
                 },

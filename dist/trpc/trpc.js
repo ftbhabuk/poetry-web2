@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,10 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.privateProcedure = exports.publicProcedure = exports.router = void 0;
-var server_1 = require("@trpc/server");
-var t = server_1.initTRPC.context().create();
+import { TRPCError, initTRPC } from '@trpc/server';
+var t = initTRPC.context().create();
 var middleware = t.middleware;
 var isAuth = middleware(function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
     var req, user;
@@ -47,7 +44,7 @@ var isAuth = middleware(function (_a) { return __awaiter(void 0, [_a], void 0, f
         req = ctx.req;
         user = req.user;
         if (!user || !user.id) {
-            throw new server_1.TRPCError({ code: 'UNAUTHORIZED' });
+            throw new TRPCError({ code: 'UNAUTHORIZED' });
         }
         return [2 /*return*/, next({
                 ctx: {
@@ -56,6 +53,6 @@ var isAuth = middleware(function (_a) { return __awaiter(void 0, [_a], void 0, f
             })];
     });
 }); });
-exports.router = t.router;
-exports.publicProcedure = t.procedure;
-exports.privateProcedure = t.procedure.use(isAuth);
+export var router = t.router;
+export var publicProcedure = t.procedure;
+export var privateProcedure = t.procedure.use(isAuth);

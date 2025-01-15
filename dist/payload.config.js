@@ -1,32 +1,29 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var config_1 = require("payload/config");
-var db_mongodb_1 = require("@payloadcms/db-mongodb");
-var bundler_webpack_1 = require("@payloadcms/bundler-webpack");
-var path_1 = __importDefault(require("path"));
-var Users_1 = require("./collections/Users");
-var dotenv_1 = __importDefault(require("dotenv"));
-var Products_1 = require("./collections/Products/Products");
-var Media_1 = require("./collections/Media");
-var richtext_lexical_1 = require("@payloadcms/richtext-lexical"); // Add this import
-dotenv_1.default.config({
-    path: path_1.default.resolve(__dirname, "../.env")
+import { buildConfig } from 'payload/config';
+import { webpackBundler } from '@payloadcms/bundler-webpack';
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
+// import { slateEditor } from '@payloadcms/richtext-slate'
+import path from 'path';
+import { Users } from './collections/Users';
+import dotenv from 'dotenv';
+import { Products } from './collections/Products/Products';
+import { Media } from './collections/Media';
+// import { ProductFiles } from './collections/ProductFile'
+// import { Orders } from './collections/Orders'
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
+dotenv.config({
+    path: path.resolve(__dirname, '../.env'),
 });
-exports.default = (0, config_1.buildConfig)({
+export default buildConfig({
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-    collections: [Users_1.Users, Products_1.Products, Media_1.Media,],
+    collections: [Users, Products, Media,],
     routes: {
-        // mauybe change here to /publish
         admin: '/publish',
     },
     admin: {
-        user: "users",
-        bundler: (0, bundler_webpack_1.webpackBundler)(),
+        user: 'users',
+        bundler: webpackBundler(),
         meta: {
-            titleSuffix: "- Uperhaps",
+            titleSuffix: '- DigitalHippo',
             favicon: '/favicon.ico',
             ogImage: '/thumbnail.jpg',
         },
@@ -34,12 +31,16 @@ exports.default = (0, config_1.buildConfig)({
     rateLimit: {
         max: 2000,
     },
-    // here we are changing the editor to lexical
-    editor: (0, richtext_lexical_1.lexicalEditor)({}),
-    db: (0, db_mongodb_1.mongooseAdapter)({
+    editor: lexicalEditor({
+        features: function (_a) {
+            var defaultFeatures = _a.defaultFeatures;
+            return defaultFeatures;
+        },
+    }),
+    db: mongooseAdapter({
         url: process.env.MONGODB_URL,
     }),
     typescript: {
-        outputFile: path_1.default.resolve(__dirname, 'payload-types.ts'),
+        outputFile: path.resolve(__dirname, 'payload-types.ts'),
     },
 });
