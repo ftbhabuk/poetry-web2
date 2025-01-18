@@ -10,6 +10,8 @@ import nextBuild from 'next/dist/build'
 import path from 'path'
 import { PayloadRequest } from 'payload/types'
 import { parse } from 'url'
+import { convertDescriptions } from './convert-descriptions'
+
 
 const app = express()
 const PORT = Number(process.env.PORT) || 3000
@@ -45,6 +47,10 @@ const start = async () => {
       },
     },
   })
+
+  if (process.env.CONVERT_DESCRIPTIONS === 'true') {
+    convertDescriptions(payload).catch(console.error);
+  }
 
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,16 +34,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRouter = void 0;
-var account_credentials_validator_1 = require("../lib/validators/account-credentials-validator");
-var trpc_1 = require("./trpc");
-var get_payload_1 = require("../get-payload");
-var server_1 = require("@trpc/server");
-var zod_1 = require("zod");
-exports.authRouter = (0, trpc_1.router)({
-    createPayloadUser: trpc_1.publicProcedure
-        .input(account_credentials_validator_1.AuthCredentialsValidator)
+import { AuthCredentialsValidator } from '../lib/validators/account-credentials-validator';
+import { publicProcedure, router } from './trpc';
+import { getPayloadClient } from '../get-payload';
+import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
+export var authRouter = router({
+    createPayloadUser: publicProcedure
+        .input(AuthCredentialsValidator)
         .mutation(function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
         var email, password, payload, users;
         var input = _b.input;
@@ -52,7 +49,7 @@ exports.authRouter = (0, trpc_1.router)({
             switch (_c.label) {
                 case 0:
                     email = input.email, password = input.password;
-                    return [4 /*yield*/, (0, get_payload_1.getPayloadClient)()
+                    return [4 /*yield*/, getPayloadClient()
                         // check if user already exists
                     ];
                 case 1:
@@ -68,7 +65,7 @@ exports.authRouter = (0, trpc_1.router)({
                 case 2:
                     users = (_c.sent()).docs;
                     if (users.length !== 0)
-                        throw new server_1.TRPCError({ code: 'CONFLICT' });
+                        throw new TRPCError({ code: 'CONFLICT' });
                     return [4 /*yield*/, payload.create({
                             collection: 'users',
                             data: {
@@ -83,8 +80,8 @@ exports.authRouter = (0, trpc_1.router)({
             }
         });
     }); }),
-    verifyEmail: trpc_1.publicProcedure
-        .input(zod_1.z.object({ token: zod_1.z.string() }))
+    verifyEmail: publicProcedure
+        .input(z.object({ token: z.string() }))
         .query(function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
         var token, payload, isVerified;
         var input = _b.input;
@@ -92,7 +89,7 @@ exports.authRouter = (0, trpc_1.router)({
             switch (_c.label) {
                 case 0:
                     token = input.token;
-                    return [4 /*yield*/, (0, get_payload_1.getPayloadClient)()];
+                    return [4 /*yield*/, getPayloadClient()];
                 case 1:
                     payload = _c.sent();
                     return [4 /*yield*/, payload.verifyEmail({
@@ -102,13 +99,13 @@ exports.authRouter = (0, trpc_1.router)({
                 case 2:
                     isVerified = _c.sent();
                     if (!isVerified)
-                        throw new server_1.TRPCError({ code: 'UNAUTHORIZED' });
+                        throw new TRPCError({ code: 'UNAUTHORIZED' });
                     return [2 /*return*/, { success: true }];
             }
         });
     }); }),
-    signIn: trpc_1.publicProcedure
-        .input(account_credentials_validator_1.AuthCredentialsValidator)
+    signIn: publicProcedure
+        .input(AuthCredentialsValidator)
         .mutation(function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
         var email, password, res, payload, err_1;
         var input = _b.input, ctx = _b.ctx;
@@ -117,7 +114,7 @@ exports.authRouter = (0, trpc_1.router)({
                 case 0:
                     email = input.email, password = input.password;
                     res = ctx.res;
-                    return [4 /*yield*/, (0, get_payload_1.getPayloadClient)()];
+                    return [4 /*yield*/, getPayloadClient()];
                 case 1:
                     payload = _c.sent();
                     _c.label = 2;
@@ -136,7 +133,7 @@ exports.authRouter = (0, trpc_1.router)({
                     return [2 /*return*/, { success: true }];
                 case 4:
                     err_1 = _c.sent();
-                    throw new server_1.TRPCError({ code: 'UNAUTHORIZED' });
+                    throw new TRPCError({ code: 'UNAUTHORIZED' });
                 case 5: return [2 /*return*/];
             }
         });

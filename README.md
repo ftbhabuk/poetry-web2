@@ -1,3 +1,10 @@
+respove the problem from cliet soode renderin and sever soe renderin
+
+
+go to cryy branh an fetchprevious old data 
+later add new backn for theme excerpt context and date 
+don't add the fkin word count from lexical is the rooot of error
+
 # 🌟 UnwhisperedPerhaps.. 🌟
 
 Welcome to **UnwhisperedPerhaps..**, your ultimate digital sanctuary for poetry and literary exploration!

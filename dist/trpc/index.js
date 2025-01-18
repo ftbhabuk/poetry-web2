@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -57,21 +56,19 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.appRouter = void 0;
-var zod_1 = require("zod");
-var trpc_1 = require("./trpc");
-var query_validator_1 = require("../lib/validators/query-validator");
-var get_payload_1 = require("../get-payload");
-var auth_router_1 = require("./auth-router");
-exports.appRouter = (0, trpc_1.router)({
-    auth: auth_router_1.authRouter,
-    getInfiniteProducts: trpc_1.publicProcedure
-        .input(zod_1.z.object({
-        limit: zod_1.z.number().min(1).max(100),
-        cursor: zod_1.z.number().nullish(),
-        query: query_validator_1.QueryValidator.extend({
-            excludeId: zod_1.z.string().optional(),
+import { z } from 'zod';
+import { publicProcedure, router } from './trpc';
+import { QueryValidator } from '../lib/validators/query-validator';
+import { getPayloadClient } from '../get-payload';
+import { authRouter } from './auth-router';
+export var appRouter = router({
+    auth: authRouter,
+    getInfiniteProducts: publicProcedure
+        .input(z.object({
+        limit: z.number().min(1).max(100),
+        cursor: z.number().nullish(),
+        query: QueryValidator.extend({
+            excludeId: z.string().optional(),
         }),
     }))
         .query(function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
@@ -81,12 +78,8 @@ exports.appRouter = (0, trpc_1.router)({
             switch (_e.label) {
                 case 0:
                     query = input.query, cursor = input.cursor;
-                    sort = query // Default limit to 10 if undefined
-                    .sort, _c = query // Default limit to 10 if undefined
-                    .limit, limit = _c === void 0 ? 10 : _c, excludeId = query // Default limit to 10 if undefined
-                    .excludeId, queryOpts = __rest(query // Default limit to 10 if undefined
-                    , ["sort", "limit", "excludeId"]);
-                    return [4 /*yield*/, (0, get_payload_1.getPayloadClient)()];
+                    sort = query.sort, _c = query.limit, limit = _c === void 0 ? 10 : _c, excludeId = query.excludeId, queryOpts = __rest(query, ["sort", "limit", "excludeId"]);
+                    return [4 /*yield*/, getPayloadClient()];
                 case 1:
                     payload = _e.sent();
                     parsedQueryOpts = {};
@@ -97,8 +90,7 @@ exports.appRouter = (0, trpc_1.router)({
                         };
                     });
                     page = cursor || 1;
-                    sortOption = '-createdAt' // Default sort
-                    ;
+                    sortOption = '-createdAt';
                     switch (sort) {
                         case 'recent':
                             sortOption = '-createdAt';
@@ -148,5 +140,4 @@ exports.appRouter = (0, trpc_1.router)({
             }
         });
     }); }),
-    // ... other routers and procedures ...
 });

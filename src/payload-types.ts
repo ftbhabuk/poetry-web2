@@ -60,11 +60,39 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
+  descriptionWordCount?: number | null;
   description_html?: string | null;
   author: string;
   category: 'poems' | 'novels' | 'miscellaneous';
   context?: string | null;
+<<<<<<< HEAD
   quote: string;
+=======
+  themes: (
+    | 'love'
+    | 'romance'
+    | 'mystery'
+    | 'nature'
+    | 'contemporary'
+    | 'historical'
+    | 'social_issues'
+    | 'fantasy'
+    | 'philosophy'
+    | 'personal_growth'
+    | 'cultural'
+    | 'monologue'
+    | 'monotone'
+    | 'self_doubt'
+    | 'mental_health'
+    | 'beauty'
+    | 'elegance'
+    | 'grace'
+    | 'exquisiteness'
+    | 'charm'
+  )[];
+  excerpt?: string | null;
+  publishedDate?: string | null;
+>>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;
