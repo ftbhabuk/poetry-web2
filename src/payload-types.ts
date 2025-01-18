@@ -66,8 +66,11 @@ export interface Product {
   category: 'poems' | 'novels' | 'miscellaneous';
   context?: string | null;
 <<<<<<< HEAD
+<<<<<<< HEAD
   quote: string;
 =======
+=======
+>>>>>>> reverterr
   themes: (
     | 'love'
     | 'romance'
@@ -92,7 +95,10 @@ export interface Product {
   )[];
   excerpt?: string | null;
   publishedDate?: string | null;
+<<<<<<< HEAD
 >>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
+=======
+>>>>>>> reverterr
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;

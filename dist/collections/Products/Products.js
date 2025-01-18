@@ -64,6 +64,7 @@ var addUser = function (_a) { return __awaiter(void 0, [_a], void 0, function (_
         return [2 /*return*/, __assign(__assign({}, data), { user: user.id })];
     });
 }); };
+<<<<<<< HEAD
 var countWordsInRichText = function (content) {
     var _a;
     if (!content || typeof content !== 'object')
@@ -94,6 +95,15 @@ var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], vo
         if (data.description) {
             data.descriptionWordCount = countWordsInRichText(data.description);
         }
+=======
+// 
+// Add this new function for handling date updates
+var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
+    var data, operation;
+    return __generator(this, function (_c) {
+        data = _b.data;
+        operation = _b.operation;
+>>>>>>> reverterr
         // Set or update publishedDate
         if (operation === 'create' || !data.publishedDate) {
             data.publishedDate = new Date().toISOString();
@@ -101,7 +111,14 @@ var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], vo
         return [2 /*return*/, data];
     });
 }); };
+<<<<<<< HEAD
 export var Products = {
+=======
+
+// 
+
+exports.Products = {
+>>>>>>> reverterr
     slug: 'products',
     admin: {
         useAsTitle: 'name',
@@ -147,7 +164,19 @@ export var Products = {
         },
     },
     hooks: {
+<<<<<<< HEAD
         beforeChange: [addUser, updateFieldsBeforeChange],
+=======
+        beforeChange: [
+            addUser,
+            updateFieldsBeforeChange,
+            function (args) { return __awaiter(void 0, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/];
+                });
+            }); },
+        ],
+>>>>>>> reverterr
     },
     fields: [
         {
@@ -214,6 +243,20 @@ export var Products = {
             }),
             required: true,
         },
+        {
+            name: 'themes',
+            label: 'Content Themes',
+            type: 'select',
+            hasMany: true,
+            options: config_1.PRODUCT_THEMES.map(function(_a) {
+                var label = _a.label, value = _a.value;
+                return ({ label: label, value: value });
+            }),
+            required: true,
+            admin: {
+                description: 'Select one or more themes that best describe your content'
+            }
+        },
         // added myself manually lol
         {
             name: 'context',
@@ -222,11 +265,18 @@ export var Products = {
             
           },
           {
-            name: 'quote',
-            label: 'quote',
-            type: 'text',
-            required: true,
-          },
+            name: 'excerpt',
+            type: 'textarea',
+            maxLength: 200
+        },
+        {
+            name: 'publishedDate',
+            type: 'date',
+            admin: {
+                readOnly: true,
+                description: 'Automatically set on creation and updates'
+            }
+        },
         {
             name: 'context',
             label: 'Written Context',

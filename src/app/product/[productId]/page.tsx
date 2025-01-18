@@ -25,13 +25,19 @@ interface Product {
   images: Array<{ image: string | { url: string } }>;
   context: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Add any other fields your product has
 =======
+=======
+>>>>>>> reverterr
   themes: string[];
   excerpt: string;
   publishedDate: string;
   descriptionWordCount: number; // Add this
+<<<<<<< HEAD
 >>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
+=======
+>>>>>>> reverterr
 }
 
 interface PageProps {
@@ -101,12 +107,15 @@ const Page = async ({ params }: PageProps) => {
             <div className="flex-1 mt-8 mb-8">
             <ContentContextButton 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // category={product?.category?.toString() || 'Uncategorized'}
   // title={product?.name?.toString() || 'Untitled'}
   // author={product?.author?.toString() || 'Unknown Author'}
   // description={product?.description?.toString() || 'No description available'}
 />
 =======
+=======
+>>>>>>> reverterr
               name={product.name as string}
               category={product.category as string}
               author={product.author as string}
@@ -117,7 +126,10 @@ const Page = async ({ params }: PageProps) => {
               product={product} 
               descriptionWordCount={product.descriptionWordCount as number || 0}
             />
+<<<<<<< HEAD
 >>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
+=======
+>>>>>>> reverterr
             </div>
           </div>
 
@@ -162,7 +174,7 @@ const Page = async ({ params }: PageProps) => {
           <div className='flex items-center space-x-4'>
             <div className="group relative">
               <span className='text-sm text-muted-foreground'>
-                © {product.context as string}
+                © {product.author as string}
               </span>
               <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
               Copyright Content
