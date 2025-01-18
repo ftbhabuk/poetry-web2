@@ -202,11 +202,10 @@ exports.Products = {
             
           },
           {
-            name: 'quote',
-            label: 'quote',
-            type: 'text',
-            required: true,
-          },
+            name: 'excerpt',
+            type: 'textarea',
+            maxLength: 200
+        },
         {
             name: 'approvedForSale',
             label: 'Content Status',

@@ -86,7 +86,7 @@ export interface Product {
     | 'exquisiteness'
     | 'charm'
   )[];
-  quote: string;
+  excerpt?: string | null;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;
