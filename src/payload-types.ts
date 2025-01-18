@@ -64,6 +64,28 @@ export interface Product {
   author: string;
   category: 'poems' | 'novels' | 'miscellaneous';
   context?: string | null;
+  themes: (
+    | 'love'
+    | 'romance'
+    | 'mystery'
+    | 'nature'
+    | 'contemporary'
+    | 'historical'
+    | 'social_issues'
+    | 'fantasy'
+    | 'philosophy'
+    | 'personal_growth'
+    | 'cultural'
+    | 'monologue'
+    | 'monotone'
+    | 'self_doubt'
+    | 'mental_health'
+    | 'beauty'
+    | 'elegance'
+    | 'grace'
+    | 'exquisiteness'
+    | 'charm'
+  )[];
   quote: string;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {

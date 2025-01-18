@@ -1,28 +1,54 @@
 "use client"
-
-import { ChevronDown, BookOpen, Feather, Clock, Heart } from 'lucide-react'
+import { ChevronDown, BookOpen, Feather, Heart, Quote, PenSquare } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
+import AddToCartButton from '@/components/AddToCartButton'
 
 interface ContentContextButtonProps {
+  name?: string;
   category?: string;
-  title?: string;
   author?: string;
-  description?: string | object;
+  themes?: string[];
+  excerpt?: string;
+  context?: string;
+  publishedDate?: string;
+  descriptionWordCount?: number;
+  product?: any;
+
+}
+
+interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  description_html?: string;
+  category: string;
+  author: string;
+  images?: Array<{ image: string | { url: string } }>;
+  context?: string;
+  themes?: string[];
+  excerpt?: string;
+  publishedDate?: string;
 }
 
 const ContentContextButton = ({ 
+  name = 'Untitled', 
   category = 'Uncategorized', 
-  title = 'Untitled', 
-  author = 'Unknown Author', 
-  description = 'No description available' 
+  author = 'Unknown Author',
+  themes = [],
+  excerpt = 'No excerpt available',
+  context = '',
+  publishedDate = '',
+  descriptionWordCount = 0,
+  product
 }: ContentContextButtonProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Auto-open effect - only for larger screens
+  const displayWordCount = descriptionWordCount || 0;  // Ensure we always have a number
+
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) { // md breakpoint
+      if (window.innerWidth >= 768) {
         const timer = setTimeout(() => {
           setIsOpen(true)
         }, 500)
@@ -32,7 +58,7 @@ const ContentContextButton = ({
       }
     }
 
-    handleResize() // Initial check
+    handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -48,16 +74,7 @@ const ContentContextButton = ({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const safeCategory = typeof category === 'string' ? category : 'Uncategorized'
-  const safeAuthor = typeof author === 'string' ? author : 'Unknown Author'
-
-  const contextInfo = {
-    timeToRead: "4 min read",
-    genre: safeCategory,
-    mood: safeAuthor,
-    themes: [safeCategory],
-    writtenOn: `By: ${safeAuthor}`
-  }
+  const formattedDate = publishedDate ? new Date(publishedDate).toLocaleDateString() : 'Date not available'
 
   return (
     <div className="relative flex justify-end w-full" ref={dropdownRef}>
@@ -86,10 +103,11 @@ const ContentContextButton = ({
         <div className="absolute top-full right-0 mt-4 rounded-2xl bg-white/30 backdrop-blur-md
                        border border-white/20 shadow-xl transition-all duration-300
                        animate-in slide-in-from-top-5 fade-in-20 z-50
-                       w-80 md:w-96">
+                       sm:w-120 w-80 md:w-96">
           <div className="p-4 space-y-4 max-h-[80vh]">
-            <div className="border-b border-gray-200/30 pb-2">
-              <h3 className="text-lg font-serif text-gray-700">{title}</h3>
+            <div className="space-y-1">
+              <h3 className="text-lg font-serif text-gray-700">{name}</h3>
+              <p className="text-sm text-gray-400">{formattedDate}</p>
             </div>
 
             <div className="space-y-3 overflow-y-auto pr-2 max-h-[60vh] 
@@ -101,36 +119,60 @@ const ContentContextButton = ({
                           [&::-webkit-scrollbar-thumb]:hover:bg-white/30
                           hover:[&::-webkit-scrollbar-thumb]:bg-white/40
                           transition-all duration-300">
-              <div className="flex items-center space-x-3 text-gray-600 p-2 rounded-lg 
-                            transition-colors duration-200">
-                <Clock className="h-4 w-4" />
-                <span className="text-sm">{contextInfo.timeToRead}</span>
-              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="group relative">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40
+                                text-gray-600 hover:text-green-800 hover:bg-white/50 
+                                transition-all duration-200 shadow-sm
+                                hover:shadow-md hover:scale-105">
+                    <BookOpen className="h-4 w-4" />
+                    <span className="text-sm">{category}</span>
+                  </div>
+                  {/* <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
+                                bg-gray-800 text-white text-xs rounded py-1 px-2 mb-1
+                                opacity-0 group-hover:opacity-100 transition-opacity duration-300 
+                                whitespace-nowrap pointer-events-none">
+                    Category
+                  </div> */}
+                </div>
 
-              <div className="flex items-center space-x-3 text-gray-600 p-2 rounded-lg 
-                            transition-colors duration-200">
-                <BookOpen className="h-4 w-4" />
-                <span className="text-sm">{contextInfo.genre}</span>
-              </div>
+                <div className="group relative">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40
+                                text-gray-600 hover:text-green-800 hover:bg-white/50 
+                                transition-all duration-200 shadow-sm
+                                hover:shadow-md hover:scale-105">
+                    {/* <Heart className="h-4 w-4" /> */}
+                    <span className="text-sm"> ©{author}</span>
+                  </div>
+                  {/* <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
+                                bg-gray-800 text-white text-xs rounded py-1 px-2 mb-1
+                                opacity-0 group-hover:opacity-100 transition-opacity duration-300 
+                                whitespace-nowrap pointer-events-none">
+                    Author
+                  </div> */}
+                </div>
 
-              <div className="flex items-center space-x-3 text-gray-600 p-2 rounded-lg 
-                            transition-colors duration-200">
-                <Heart className="h-4 w-4" />
-                <span className="text-sm">{contextInfo.mood}</span>
-              </div>
+                {displayWordCount > 0 && (
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40 text-gray-600 hover:text-green-800 hover:bg-white/50 transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105">
+                  <PenSquare className="h-4 w-4" />
+                  <span className="text-sm">{displayWordCount} words</span>
+                </div>
+              )}
+            </div>
 
-              <div className="space-y-2 p-2 rounded-lg">
-                <div className="flex items-center space-x-3 text-gray-600">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-gray-600">
                   <Feather className="h-4 w-4" />
                   <span className="text-sm">Themes</span>
                 </div>
-                <div className="flex flex-wrap gap-2 pl-7">
-                  {contextInfo.themes.map((theme, index) => (
+                <div className="flex flex-wrap gap-2">
+                  {themes.map((theme, index) => (
                     <span
                       key={`${theme}-${index}`}
-                      className="px-2 py-1 text-xs rounded-full bg-white/30 text-gray-600
-                               hover:bg-green-100/50 hover:text-green-800 hover:scale-105
-                               transition-all duration-200 cursor-pointer"
+                      className="px-3 py-1.5 text-sm rounded-full bg-white/40 text-gray-600
+                               hover:text-green-800 hover:bg-white/50 transition-all duration-200 
+                               cursor-pointer shadow-sm hover:shadow-md hover:scale-105"
                     >
                       {theme}
                     </span>
@@ -138,11 +180,46 @@ const ContentContextButton = ({
                 </div>
               </div>
 
-              <div className="bg-white/10 p-4 rounded-lg">
-                <div className="text-sm text-gray-600 leading-relaxed">
-                  {contextInfo.writtenOn}
+              {excerpt && (
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Quote className="h-4 w-4 text-gray-600" />
+                    <h4 className="text-sm font-medium text-gray-600">Excerpt</h4>
+                  </div>
+                  <div className="bg-white/10 p-4 rounded-lg">
+                    <div className="text-sm text-gray-600 leading-relaxed italic">
+                      &ldquo;{excerpt}&rdquo;
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+                
+                {/* {displayWordCount > 0 && (
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <PenSquare className="h-4 w-4 text-gray-600" />
+          <h4 className="text-sm font-medium text-gray-600">
+            Word Count
+          </h4>
+        </div>
+        <div className="text-sm text-gray-600 bg-white/10 p-2 rounded">
+          {displayWordCount.toLocaleString()} words
+        </div>
+      </div>
+    )} */}
+              {context && (
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <PenSquare className="h-4 w-4 text-gray-600" />
+                    <h4 className="text-sm font-medium text-gray-600">Context</h4>
+                  </div>
+                  <div className="bg-white/10 p-4 rounded-lg">
+                    <div className="text-sm text-gray-600 leading-relaxed">
+                      {context}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -180,6 +180,20 @@ exports.Products = {
             }),
             required: true,
         },
+        {
+            name: 'themes',
+            label: 'Content Themes',
+            type: 'select',
+            hasMany: true,
+            options: config_1.PRODUCT_THEMES.map(function(_a) {
+                var label = _a.label, value = _a.value;
+                return ({ label: label, value: value });
+            }),
+            required: true,
+            admin: {
+                description: 'Select one or more themes that best describe your content'
+            }
+        },
         // added myself manually lol
         {
             name: 'context',
