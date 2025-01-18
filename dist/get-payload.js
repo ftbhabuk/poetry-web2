@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -54,14 +55,19 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import dotenv from 'dotenv';
-import path from 'path';
-import payload from 'payload';
-import nodemailer from 'nodemailer';
-dotenv.config({
-    path: path.resolve(__dirname, '../.env'),
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPayloadClient = void 0;
+var dotenv_1 = __importDefault(require("dotenv"));
+var path_1 = __importDefault(require("path"));
+var payload_1 = __importDefault(require("payload"));
+var nodemailer_1 = __importDefault(require("nodemailer"));
+dotenv_1.default.config({
+    path: path_1.default.resolve(__dirname, '../.env'),
 });
-var transporter = nodemailer.createTransport({
+var transporter = nodemailer_1.default.createTransport({
     host: 'smtp.resend.com',
     secure: true,
     port: 465,
@@ -77,7 +83,7 @@ if (!cached) {
         promise: null,
     };
 }
-export var getPayloadClient = function () {
+var getPayloadClient = function () {
     var args_1 = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         args_1[_i] = arguments[_i];
@@ -95,10 +101,10 @@ export var getPayloadClient = function () {
                         return [2 /*return*/, cached.client];
                     }
                     if (!cached.promise) {
-                        cached.promise = payload.init(__assign({ email: {
+                        cached.promise = payload_1.default.init(__assign({ email: {
                                 transport: transporter,
                                 // here we have to have own domain like uperhaps.com
-                                fromAddress: 'uperhaps.up.railway.app',
+                                fromAddress: 'bhabukb.com.np',
                                 fromName: 'UPerhaps',
                             }, secret: process.env.PAYLOAD_SECRET, local: (initOptions === null || initOptions === void 0 ? void 0 : initOptions.express) ? false : true }, (initOptions || {})));
                     }
@@ -118,3 +124,4 @@ export var getPayloadClient = function () {
         });
     });
 };
+exports.getPayloadClient = getPayloadClient;

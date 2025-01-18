@@ -5,22 +5,21 @@ interface StyledProductDescriptionProps {
 }
 
 const StyledProductDescription: React.FC<StyledProductDescriptionProps> = ({ descriptionHtml }) => {
-  // Add null/undefined check and ensure it's a string
-  const safeHtml = typeof descriptionHtml === 'string' ? descriptionHtml : '';
-  
   return (
     <div className="relative p-6 rounded-lg overflow-hidden">
+      {/* Background fading effect */}
       <div
         className="absolute inset-0 rounded-lg"
         style={{
           background: 'radial-gradient(circle, rgba(245, 245, 245, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
-          boxShadow: 'inset 0 0 30px rgba(255, 255, 255, 0.6)',
+          boxShadow: 'inset 0 0 30px rgba(255, 255, 255, 0.6)',  // subtle inner shadow for uniform fading
         }}
         aria-hidden="true"
       ></div>
-      <div
+      {/* Content */}
+      <div 
         className="relative prose prose-sm max-w-none text-gray-700"
-        dangerouslySetInnerHTML={safeHtml ? { __html: safeHtml } : { __html: '' }}
+        dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />
     </div>
   );

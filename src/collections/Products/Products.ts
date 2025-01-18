@@ -9,54 +9,15 @@ const addUser: BeforeChangeHook<Product> = async ({ req, data }) => {
   return { ...data, user: user.id };
 };
 
-<<<<<<< HEAD
-const countWordsInRichText = (content: any): number => {
-  if (!content || typeof content !== 'object') return 0;
-  
-  if (content.html) {
-    const strippedHtml = content.html.replace(/<[^>]*>/g, ' ');
-    return strippedHtml.trim().split(/\s+/).filter(Boolean).length;
-  }
-
-  if (!content?.root?.children) return 0;
-
-  const extractTextFromNode = (node: any): string => {
-    if (typeof node === 'string') return node;
-    if (typeof node?.text === 'string') return node.text;
-    if (Array.isArray(node?.children)) {
-      return node.children.map(extractTextFromNode).join(' ');
-    }
-    return '';
-  };
-
-  const text = content.root.children.map(extractTextFromNode).join(' ');
-  return text.trim().split(/\s+/).filter(Boolean).length;
-};
-
 const updateFieldsBeforeChange: BeforeChangeHook<Product> = async ({ data, operation }) => {
-  // Update word count if description exists
-  if (data.description) {
-    data.descriptionWordCount = countWordsInRichText(data.description);
-  }
-
-=======
-const updateFieldsBeforeChange: BeforeChangeHook<Product> = async ({ data, operation }) => {
->>>>>>> reverterr
   // Set or update publishedDate
   if (operation === 'create' || !data.publishedDate) {
     data.publishedDate = new Date().toISOString();
   }
-<<<<<<< HEAD
-
-  return data;
-};
-
-=======
   return data;
 };
 
 
->>>>>>> reverterr
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
@@ -94,11 +55,7 @@ export const Products: CollectionConfig = {
     },
   },
   hooks: {
-<<<<<<< HEAD
-    beforeChange: [addUser, updateFieldsBeforeChange],
-=======
     beforeChange: [addUser,updateFieldsBeforeChange],
->>>>>>> reverterr
   },
   fields: [
     {
@@ -130,25 +87,11 @@ export const Products: CollectionConfig = {
       }),
     },
     {
-      name: 'descriptionWordCount',
-      label: 'Description Word Count',
-      type: 'number',
-      admin: {
-        readOnly: true,
-        hidden: false,
-        description: 'Automatically calculated word count',
-      },
-    },
-    {
       name: 'description_html',
-      type: 'textarea',
+      type: 'textarea', //changed
       admin: {
         hidden: true,
       },
-      // 
-      
-      // 
-      
     },
     {
       name: 'author',
@@ -167,7 +110,6 @@ export const Products: CollectionConfig = {
       name: 'context',
       label: 'Written Context',
       type: 'text',
-<<<<<<< HEAD
       
     },
     {
@@ -177,38 +119,9 @@ export const Products: CollectionConfig = {
       hasMany: true,
       options: PRODUCT_THEMES.map(({ label, value }) => ({ label, value })),
       required: true,
-<<<<<<< HEAD
-=======
-    },
-    {
-      name: 'themes',
-      label: 'Content Themes',
-      type: 'select',
-      hasMany: true,
-      options: PRODUCT_THEMES.map(({ label, value }) => ({ label, value })),
-      required: true,
       admin: {
         description: 'Select one or more themes that best describe your content'
       }
-    },
-    {
-      name: 'excerpt',
-      type: 'textarea',
-      maxLength: 200
-    },
-    {
-      name: 'publishedDate',
-      type: 'date',
-      admin: {
-        readOnly: true,
-        description: 'Automatically set on creation and updates'
-      }
->>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
-=======
-      admin: {
-        description: 'Select one or more themes that best describe your content'
-      }
->>>>>>> reverterr
     },
     {
       name: 'excerpt',
@@ -268,6 +181,5 @@ export const Products: CollectionConfig = {
         },
       ],
     },
-    
   ],
 };

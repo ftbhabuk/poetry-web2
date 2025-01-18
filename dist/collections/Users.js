@@ -1,4 +1,6 @@
-import { PrimaryActionEmailHtml } from '../components/emails/PrimaryActionEmail';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Users = void 0;
 var adminsAndUser = function (_a) {
     var user = _a.req.user;
     if (user.role === 'admin')
@@ -9,17 +11,13 @@ var adminsAndUser = function (_a) {
         },
     };
 };
-export var Users = {
+exports.Users = {
     slug: 'users',
     auth: {
         verify: {
             generateEmailHTML: function (_a) {
                 var token = _a.token;
-                return PrimaryActionEmailHtml({
-                    actionLabel: "verify your account",
-                    buttonText: "Verify Account",
-                    href: "".concat(process.env.NEXT_PUBLIC_SERVER_URL, "/verify-email?token=").concat(token)
-                });
+                return "<a href='".concat(process.env.NEXT_PUBLIC_SERVER_URL, "/verify-email?token=").concat(token, "'>Verify account</a>");
             },
         },
     },

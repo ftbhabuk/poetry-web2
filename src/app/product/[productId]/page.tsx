@@ -24,20 +24,10 @@ interface Product {
   author: string;
   images: Array<{ image: string | { url: string } }>;
   context: string;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  // Add any other fields your product has
-=======
-=======
->>>>>>> reverterr
   themes: string[];
   excerpt: string;
   publishedDate: string;
   descriptionWordCount: number; // Add this
-<<<<<<< HEAD
->>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
-=======
->>>>>>> reverterr
 }
 
 interface PageProps {
@@ -76,11 +66,6 @@ const Page = async ({ params }: PageProps) => {
 
   const [product] = products;
 
-  // Add these debug logs
-  console.log('Product:', product);
-  console.log('Description HTML:', product?.description_html);
-  console.log('Type of description:', typeof product?.description_html);
-
   if (!product) return notFound();
 
   const label = PRODUCT_CATEGORIES.find(
@@ -106,16 +91,6 @@ const Page = async ({ params }: PageProps) => {
             {/* Right side - Content Context */}
             <div className="flex-1 mt-8 mb-8">
             <ContentContextButton 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  // category={product?.category?.toString() || 'Uncategorized'}
-  // title={product?.name?.toString() || 'Untitled'}
-  // author={product?.author?.toString() || 'Unknown Author'}
-  // description={product?.description?.toString() || 'No description available'}
-/>
-=======
-=======
->>>>>>> reverterr
               name={product.name as string}
               category={product.category as string}
               author={product.author as string}
@@ -126,10 +101,6 @@ const Page = async ({ params }: PageProps) => {
               product={product} 
               descriptionWordCount={product.descriptionWordCount as number || 0}
             />
-<<<<<<< HEAD
->>>>>>> 5cbec38d6955adb132ccae692e1ee0ccb2de8172
-=======
->>>>>>> reverterr
             </div>
           </div>
 
@@ -160,13 +131,7 @@ const Page = async ({ params }: PageProps) => {
 
         {/* Product Description */}
         <div className='mt-4 space-y-6'>
-        <StyledProductDescription 
-  descriptionHtml={
-    (product.description_html && typeof product.description_html === 'string')
-      ? product.description_html
-      : ''
-  } 
-/>
+          <StyledProductDescription descriptionHtml={product.description_html as string} />
         </div>
 
         {/* Author and Add to Cart Button */}

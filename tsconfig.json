@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": false,
+    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -18,21 +22,18 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    },
-    "outDir": "./dist",
-    "rootDir": "./src" // Restrict rootDir to only source files
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
-    "src/**/*.ts", // Only include files from the src directory
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules", 
-    ".next", // Exclude .next directory
-    "dist", // Exclude output directory
-    "tailwind.config.ts", // Exclude specific files outside src
-    "postcss.config.ts"
+    "node_modules"
   ]
 }
-

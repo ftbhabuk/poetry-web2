@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-export var PRODUCT_CATEGORIES = [
-=======
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PRODUCT_CATEGORIES =  exports.PRODUCT_THEMES = void 0;
@@ -89,7 +86,6 @@ exports.PRODUCT_THEMES = [
 ];
 
 exports.PRODUCT_CATEGORIES = [
->>>>>>> reverterr
     {
         label: 'Poems',
         value: 'poems',
@@ -102,10 +98,7 @@ exports.PRODUCT_CATEGORIES = [
                 name: 'Recently Added',
                 href: '/products?category=poems&sort=reverse-alphabetical',
             },
-<<<<<<< HEAD
-=======
            
->>>>>>> reverterr
         ],
     },
     {
@@ -120,26 +113,13 @@ exports.PRODUCT_CATEGORIES = [
                 name: 'Recently Added',
                 href: '/products?category=novels&sort=reverse-alphabetical',
             },
-<<<<<<< HEAD
-=======
             
->>>>>>> reverterr
         ],
     },
-    {
+    {  
         label: 'Miscellaneous',
-        value: 'miscellaneous',
+        value: 'miscellaneous' ,
         featured: [
-<<<<<<< HEAD
-            {
-                name: 'Editor Picks',
-                href: "/products?category=miscellaneous",
-            },
-            {
-                name: 'Recently Added',
-                href: '/products?category=miscellaneous&sort=reverse-alphabetical',
-            },
-=======
           {
             name: 'Editor Picks',
             href: `/products?category=miscellaneous`,
@@ -149,89 +129,6 @@ exports.PRODUCT_CATEGORIES = [
             href: '/products?category=miscellaneous&sort=reverse-alphabetical',
           },
          
->>>>>>> reverterr
         ],
-    },
-];
-export var PRODUCT_THEMES = [
-    {
-        label: 'Love',
-        value: 'love',
-    },
-    {
-        label: 'Romance',
-        value: 'romance',
-    },
-    {
-        label: 'Mystery',
-        value: 'mystery',
-    },
-    {
-        label: 'Nature',
-        value: 'nature',
-    },
-    {
-        label: 'Contemporary',
-        value: 'contemporary',
-    },
-    {
-        label: 'Historical',
-        value: 'historical',
-    },
-    {
-        label: 'Social Issues',
-        value: 'social_issues',
-    },
-    {
-        label: 'Fantasy',
-        value: 'fantasy',
-    },
-    {
-        label: 'Philosophy',
-        value: 'philosophy',
-    },
-    {
-        label: 'Personal Growth',
-        value: 'personal_growth',
-    },
-    {
-        label: 'Cultural',
-        value: 'cultural',
-    },
-    {
-        label: 'Monologue',
-        value: 'monologue',
-    },
-    {
-        label: 'Monotone',
-        value: 'monotone',
-    },
-    {
-        label: 'Self-Doubt',
-        value: 'self_doubt',
-    },
-    {
-        label: 'Mental Health',
-        value: 'mental_health',
-    },
-    {
-        label: 'Beauty',
-        value: 'beauty',
-    },
-    {
-        label: 'Elegance',
-        value: 'elegance',
-    },
-    {
-        label: 'Grace',
-        value: 'grace',
-    },
-    {
-        label: 'Exquisiteness',
-        value: 'exquisiteness',
-    },
-    {
-        label: 'Charm',
-        value: 'charm',
-    }
+      },
 ];

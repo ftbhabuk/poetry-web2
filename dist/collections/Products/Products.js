@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -54,8 +55,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { PRODUCT_CATEGORIES, PRODUCT_THEMES } from '../../config';
-import { lexicalEditor, HTMLConverterFeature } from '@payloadcms/richtext-lexical';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Products = void 0;
+var config_1 = require("../../config");
+var richtext_lexical_1 = require("@payloadcms/richtext-lexical");
+// Hook to add the user to the product before saving
 var addUser = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
     var user;
     var req = _b.req, data = _b.data;
@@ -64,38 +68,6 @@ var addUser = function (_a) { return __awaiter(void 0, [_a], void 0, function (_
         return [2 /*return*/, __assign(__assign({}, data), { user: user.id })];
     });
 }); };
-<<<<<<< HEAD
-var countWordsInRichText = function (content) {
-    var _a;
-    if (!content || typeof content !== 'object')
-        return 0;
-    if (content.html) {
-        var strippedHtml = content.html.replace(/<[^>]*>/g, ' ');
-        return strippedHtml.trim().split(/\s+/).filter(Boolean).length;
-    }
-    if (!((_a = content === null || content === void 0 ? void 0 : content.root) === null || _a === void 0 ? void 0 : _a.children))
-        return 0;
-    var extractTextFromNode = function (node) {
-        if (typeof node === 'string')
-            return node;
-        if (typeof (node === null || node === void 0 ? void 0 : node.text) === 'string')
-            return node.text;
-        if (Array.isArray(node === null || node === void 0 ? void 0 : node.children)) {
-            return node.children.map(extractTextFromNode).join(' ');
-        }
-        return '';
-    };
-    var text = content.root.children.map(extractTextFromNode).join(' ');
-    return text.trim().split(/\s+/).filter(Boolean).length;
-};
-var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
-    var data = _b.data, operation = _b.operation;
-    return __generator(this, function (_c) {
-        // Update word count if description exists
-        if (data.description) {
-            data.descriptionWordCount = countWordsInRichText(data.description);
-        }
-=======
 // 
 // Add this new function for handling date updates
 var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
@@ -103,7 +75,6 @@ var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], vo
     return __generator(this, function (_c) {
         data = _b.data;
         operation = _b.operation;
->>>>>>> reverterr
         // Set or update publishedDate
         if (operation === 'create' || !data.publishedDate) {
             data.publishedDate = new Date().toISOString();
@@ -111,14 +82,10 @@ var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], vo
         return [2 /*return*/, data];
     });
 }); };
-<<<<<<< HEAD
-export var Products = {
-=======
 
 // 
 
 exports.Products = {
->>>>>>> reverterr
     slug: 'products',
     admin: {
         useAsTitle: 'name',
@@ -128,34 +95,44 @@ exports.Products = {
         plural: 'Contents',
     },
     access: {
+        // Restrict read access
         read: function (_a) {
             var user = _a.req.user;
-            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin')
-                return true;
+            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin') {
+                return true; // Admins can see all products
+            }
+            // Regular users can only see their own products
             return {
                 user: {
                     equals: user === null || user === void 0 ? void 0 : user.id,
                 },
             };
         },
+        // Restrict create access
         create: function (_a) {
             var user = _a.req.user;
-            return Boolean(user);
+            return Boolean(user); // All logged-in users can create products
         },
+        // Restrict update access
         update: function (_a) {
             var user = _a.req.user;
-            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin')
-                return true;
+            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin') {
+                return true; // Admins can update any product
+            }
+            // Regular users can only update their own products
             return {
                 user: {
                     equals: user === null || user === void 0 ? void 0 : user.id,
                 },
             };
         },
+        // Restrict delete access
         delete: function (_a) {
             var user = _a.req.user;
-            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin')
-                return true;
+            if ((user === null || user === void 0 ? void 0 : user.role) === 'admin') {
+                return true; // Admins can delete any product
+            }
+            // Regular users can only delete their own products
             return {
                 user: {
                     equals: user === null || user === void 0 ? void 0 : user.id,
@@ -164,9 +141,6 @@ exports.Products = {
         },
     },
     hooks: {
-<<<<<<< HEAD
-        beforeChange: [addUser, updateFieldsBeforeChange],
-=======
         beforeChange: [
             addUser,
             updateFieldsBeforeChange,
@@ -176,7 +150,6 @@ exports.Products = {
                 });
             }); },
         ],
->>>>>>> reverterr
     },
     fields: [
         {
@@ -186,7 +159,7 @@ exports.Products = {
             required: true,
             hasMany: false,
             admin: {
-                condition: function () { return false; },
+                condition: function () { return false; }, // Hide the field in the admin panel
             },
         },
         {
@@ -199,34 +172,16 @@ exports.Products = {
             name: 'description',
             label: 'Content Description',
             type: 'richText',
-            editor: lexicalEditor({
+            editor: (0, richtext_lexical_1.lexicalEditor)({
                 features: function (_a) {
                     var defaultFeatures = _a.defaultFeatures;
                     return __spreadArray(__spreadArray([], defaultFeatures, true), [
-                        HTMLConverterFeature({}),
+                        (0, richtext_lexical_1.HTMLConverterFeature)({}),
                     ], false);
                 },
             }),
         },
-        {
-            name: 'descriptionWordCount',
-            label: 'Description Word Count',
-            type: 'number',
-            admin: {
-                readOnly: true,
-                hidden: false,
-                description: 'Automatically calculated word count',
-            },
-        },
-        {
-            name: 'description_html',
-            type: 'textarea',
-            admin: {
-                hidden: true,
-            },
-            // 
-            // 
-        },
+        (0, richtext_lexical_1.lexicalHTML)('description', { name: 'description_html' }),
         {
             name: 'author',
             label: 'Author',
@@ -235,9 +190,9 @@ exports.Products = {
         },
         {
             name: 'category',
-            label: 'Content Category',
+            label: ' Content Category',
             type: 'select',
-            options: PRODUCT_CATEGORIES.map(function (_a) {
+            options: config_1.PRODUCT_CATEGORIES.map(function (_a) {
                 var label = _a.label, value = _a.value;
                 return ({ label: label, value: value });
             }),
@@ -278,38 +233,6 @@ exports.Products = {
             }
         },
         {
-            name: 'context',
-            label: 'Written Context',
-            type: 'text',
-        },
-        {
-            name: 'themes',
-            label: 'Content Themes',
-            type: 'select',
-            hasMany: true,
-            options: PRODUCT_THEMES.map(function (_a) {
-                var label = _a.label, value = _a.value;
-                return ({ label: label, value: value });
-            }),
-            required: true,
-            admin: {
-                description: 'Select one or more themes that best describe your content'
-            }
-        },
-        {
-            name: 'excerpt',
-            type: 'textarea',
-            maxLength: 200
-        },
-        {
-            name: 'publishedDate',
-            type: 'date',
-            admin: {
-                readOnly: true,
-                description: 'Automatically set on creation and updates'
-            }
-        },
-        {
             name: 'approvedForSale',
             label: 'Content Status',
             type: 'select',
@@ -319,7 +242,9 @@ exports.Products = {
                     var req = _a.req;
                     return req.user.role === 'admin';
                 },
+                // changing to let know general users of their contnet status
                 read: function () { return true; },
+                // read: ({ req }) => req.user.role === 'admin',
                 update: function (_a) {
                     var req = _a.req;
                     return req.user.role === 'admin';
@@ -339,6 +264,10 @@ exports.Products = {
                     value: 'denied',
                 },
             ],
+            // noo this wont even show status for general users 
+            // admin: {
+            //   condition: ({ user }) => user.role === 'admin', // Only allow editing for admins
+            // },
         },
         {
             name: 'images',

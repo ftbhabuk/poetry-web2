@@ -13,10 +13,7 @@ interface ContentContextButtonProps {
   publishedDate?: string;
   descriptionWordCount?: number;
   product?: any;
-<<<<<<< HEAD
-=======
 
->>>>>>> reverterr
 }
 
 interface Product {
@@ -47,11 +44,7 @@ const ContentContextButton = ({
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-<<<<<<< HEAD
-  const displayWordCount = descriptionWordCount || 0;
-=======
   const displayWordCount = descriptionWordCount || 0;  // Ensure we always have a number
->>>>>>> reverterr
 
   useEffect(() => {
     const handleResize = () => {
@@ -127,11 +120,7 @@ const ContentContextButton = ({
                           hover:[&::-webkit-scrollbar-thumb]:bg-white/40
                           transition-all duration-300">
               
-<<<<<<< HEAD
-              <div className="flex flex-wrap items-center gap-2">
-=======
               <div className="flex items-center gap-4">
->>>>>>> reverterr
                 <div className="group relative">
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40
                                 text-gray-600 hover:text-green-800 hover:bg-white/50 
@@ -140,30 +129,6 @@ const ContentContextButton = ({
                     <BookOpen className="h-4 w-4" />
                     <span className="text-sm">{category}</span>
                   </div>
-<<<<<<< HEAD
-                </div>
-
-                <div className="group relative">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40
-                                text-gray-600 hover:text-green-800 hover:bg-white/50 
-                                transition-all duration-200 shadow-sm
-                                hover:shadow-md hover:scale-105">
-                    <span className="text-sm"> ©{author}</span>
-                  </div>
-                </div>
-
-                {displayWordCount > 0 && (
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40 
-                                text-gray-600 hover:text-green-800 hover:bg-white/50 
-                                transition-all duration-200 shadow-sm 
-                                hover:shadow-md hover:scale-105">
-                    <PenSquare className="h-4 w-4" />
-                    <span className="text-sm whitespace-nowrap">{displayWordCount} words</span>
-                  </div>
-                )}
-              </div>
-
-=======
                   {/* <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
                                 bg-gray-800 text-white text-xs rounded py-1 px-2 mb-1
                                 opacity-0 group-hover:opacity-100 transition-opacity duration-300 
@@ -196,7 +161,6 @@ const ContentContextButton = ({
               )}
             </div>
 
->>>>>>> reverterr
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-gray-600">
                   <Feather className="h-4 w-4" />
@@ -229,9 +193,6 @@ const ContentContextButton = ({
                   </div>
                 </div>
               )}
-<<<<<<< HEAD
-
-=======
                 
                 {/* {displayWordCount > 0 && (
       <div className="space-y-1">
@@ -246,7 +207,6 @@ const ContentContextButton = ({
         </div>
       </div>
     )} */}
->>>>>>> reverterr
               {context && (
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
