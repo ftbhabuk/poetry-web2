@@ -68,6 +68,23 @@ var addUser = function (_a) { return __awaiter(void 0, [_a], void 0, function (_
         return [2 /*return*/, __assign(__assign({}, data), { user: user.id })];
     });
 }); };
+// 
+// Add this new function for handling date updates
+var updateFieldsBeforeChange = function (_a) { return __awaiter(void 0, [_a], void 0, function (_b) {
+    var data, operation;
+    return __generator(this, function (_c) {
+        data = _b.data;
+        operation = _b.operation;
+        // Set or update publishedDate
+        if (operation === 'create' || !data.publishedDate) {
+            data.publishedDate = new Date().toISOString();
+        }
+        return [2 /*return*/, data];
+    });
+}); };
+
+// 
+
 exports.Products = {
     slug: 'products',
     admin: {
@@ -126,6 +143,7 @@ exports.Products = {
     hooks: {
         beforeChange: [
             addUser,
+            updateFieldsBeforeChange,
             function (args) { return __awaiter(void 0, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     return [2 /*return*/];
@@ -205,6 +223,14 @@ exports.Products = {
             name: 'excerpt',
             type: 'textarea',
             maxLength: 200
+        },
+        {
+            name: 'publishedDate',
+            type: 'date',
+            admin: {
+                readOnly: true,
+                description: 'Automatically set on creation and updates'
+            }
         },
         {
             name: 'approvedForSale',

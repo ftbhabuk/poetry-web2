@@ -9,6 +9,15 @@ const addUser: BeforeChangeHook<Product> = async ({ req, data }) => {
   return { ...data, user: user.id };
 };
 
+const updateFieldsBeforeChange: BeforeChangeHook<Product> = async ({ data, operation }) => {
+  // Set or update publishedDate
+  if (operation === 'create' || !data.publishedDate) {
+    data.publishedDate = new Date().toISOString();
+  }
+  return data;
+};
+
+
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
@@ -46,7 +55,7 @@ export const Products: CollectionConfig = {
     },
   },
   hooks: {
-    beforeChange: [addUser],
+    beforeChange: [addUser,updateFieldsBeforeChange],
   },
   fields: [
     {
@@ -118,6 +127,14 @@ export const Products: CollectionConfig = {
       name: 'excerpt',
       type: 'textarea',
       maxLength: 200
+  },
+  {
+    name: 'publishedDate',
+    type: 'date',
+    admin: {
+      readOnly: true,
+      description: 'Automatically set on creation and updates'
+    }
   },
     {
       name: 'approvedForSale',

@@ -87,6 +87,7 @@ export interface Product {
     | 'charm'
   )[];
   excerpt?: string | null;
+  publishedDate?: string | null;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;
