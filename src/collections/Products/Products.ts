@@ -65,6 +65,7 @@ export const Products: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    
     {
       name: 'description',
       label: 'Content Description',
@@ -94,6 +95,18 @@ export const Products: CollectionConfig = {
       label: 'Content Category',
       type: 'select',
       options: PRODUCT_CATEGORIES.map(({ label, value }) => ({ label, value })),
+      required: true,
+    },
+    {
+      name: 'context',
+      label: 'Written Context',
+      type: 'text',
+      
+    },
+    {
+      name: 'quote',
+      label: 'quote',
+      type: 'text',
       required: true,
     },
     {

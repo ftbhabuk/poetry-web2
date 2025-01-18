@@ -180,6 +180,19 @@ exports.Products = {
             }),
             required: true,
         },
+        // added myself manually lol
+        {
+            name: 'context',
+            label: 'Written Context',
+            type: 'text',
+            
+          },
+          {
+            name: 'quote',
+            label: 'quote',
+            type: 'text',
+            required: true,
+          },
         {
             name: 'approvedForSale',
             label: 'Content Status',

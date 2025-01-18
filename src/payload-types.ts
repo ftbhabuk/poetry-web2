@@ -63,6 +63,8 @@ export interface Product {
   description_html?: string | null;
   author: string;
   category: 'poems' | 'novels' | 'miscellaneous';
+  context?: string | null;
+  quote: string;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   images: {
     image: string | Media;
